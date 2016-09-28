@@ -16,17 +16,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var recordView: RecordView!
 
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         recordView.tintColor = NSColor(red: 0.164, green: 0.517, blue: 0.823, alpha: 1)
-        let keyCombo = KeyCombo(doubledCocoaModifiers: .CommandKeyMask)
+        let keyCombo = KeyCombo(doubledCocoaModifiers: .command)
         recordView.keyCombo = keyCombo
         recordView.delegate = self
 
         let hotKey = HotKey(identifier: "KeyHolderExample", keyCombo: keyCombo!, target: self, action: #selector(AppDelegate.hotkeyCalled))
-        hotKey.register()
+        let _ = hotKey.register()
     }
 
-    func applicationWillTerminate(aNotification: NSNotification) {
+    func applicationWillTerminate(_ aNotification: Notification) {
         HotKeyCenter.sharedCenter.unregisterAll()
     }
 
@@ -38,27 +38,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 // MARK: - RecordView Delegate
 extension AppDelegate: RecordViewDelegate {
-    func recordViewShouldBeginRecording(recordView: RecordView) -> Bool {
+    func recordViewShouldBeginRecording(_ recordView: RecordView) -> Bool {
         return true
     }
 
-    func recordView(recordView: RecordView, canRecordKeyCombo keyCombo: KeyCombo) -> Bool {
+    func recordView(_ recordView: RecordView, canRecordKeyCombo keyCombo: KeyCombo) -> Bool {
         // You can customize validation
         return true
     }
 
-    func recordViewDidClearShortcut(recordView: RecordView) {
+    func recordViewDidClearShortcut(_ recordView: RecordView) {
         print("clear shortcut")
         HotKeyCenter.sharedCenter.unregisterHotKey("KeyHolderExample")
     }
 
-    func recordViewDidEndRecording(recordView: RecordView) {
+    func recordViewDidEndRecording(_ recordView: RecordView) {
         print("end recording")
     }
 
-    func recordView(recordView: RecordView, didChangeKeyCombo keyCombo: KeyCombo) {
+    func recordView(_ recordView: RecordView, didChangeKeyCombo keyCombo: KeyCombo) {
         HotKeyCenter.sharedCenter.unregisterHotKey("KeyHolderExample")
         let hotKey = HotKey(identifier: "KeyHolderExample", keyCombo: keyCombo, target: self, action: #selector(AppDelegate.hotkeyCalled))
-        hotKey.register()
+        let _ = hotKey.register()
     }
 }
