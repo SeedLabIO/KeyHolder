@@ -259,7 +259,7 @@ public extension RecordView {
 }
 
 // MARK: - NSReponder
-public extension RecordView {
+extension RecordView {
     open override var acceptsFirstResponder: Bool {
         return enabled
     }
